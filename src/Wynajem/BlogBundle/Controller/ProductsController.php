@@ -4,7 +4,6 @@ namespace Wynajem\BlogBundle\Controller;
 
 use Common\UserBundle\Form\LoginType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -52,7 +51,6 @@ class ProductsController extends Controller
     /**
      * @Route("/prices", name="blog_prices")
      *
-     * @Template()
      */
     public function pricesAction()
     {
