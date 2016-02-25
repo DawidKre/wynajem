@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <title>{% spaceless %}{% block pageTitle %}{% endblock %}{% endspaceless %} | Wynajem</title>
+    <meta name="keywords" content="HTML5 Template"/>
+    <meta name="description" content="{% spaceless %}{% block pageDescription %}{% endblock %}{% endspaceless %}">
+    <meta name="author" content="">
+
+    <!-- Mobile Metas -->
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light"
+          rel="stylesheet" type="text/css">
+
+    {% stylesheets 'bundles/wynajemblog/vendor/fontawesome/css/font-awesome.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+
+    {% stylesheets
+    'bundles/wynajemblog/style/vendor/bootstrap.css'
+
+    'bundles/wynajemblog/style/vendor/owl.carousel.min.css'
+    'bundles/wynajemblog/style/vendor/owl.theme.default.css'
+    'bundles/wynajemblog/style/vendor/magnific-popup.css'
+    'bundles/wynajemblog/style/css/theme.css'
+    'bundles/wynajemblog/style/css/theme-elements.css'
+    'bundles/wynajemblog/style/css/theme-blog.css'
+    'bundles/wynajemblog/style/css/theme-shop.css'
+    'bundles/wynajemblog/style/css/theme-animate.css'
+    'bundles/wynajemblog/style/vendor/circle-flip-slideshow/css/component.css'
+    'bundles/wynajemblog/style/vendor/rs-plugin/css/settings.css'
+    'bundles/wynajemblog/style/css/skins/default.css'
+    'bundles/wynajemblog/style/css/custom.css'
+    'bundles/wynajemblog/style/css/ie.css'
+
+    filter='?uglifycss'
+    filter='?cssrewrite'
+    output = '/assets/css/compiled.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+    <!-- Vendor CSS -->
+    {% block stylesheets %}
+
+    {% endblock %}
+
+    {% javascripts '@WynajemBlogBundle/Resources/public/javascripts/vendor/modernizr.js'
+    filter='uglifyjs2'
+    output = '/assets/js/moernizr.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script src="{{ asset('bundles/wynajemblog/vendor/modernizr/modernizr.js') }}"></script>
+
+
+    {#<link rel="stylesheet" href="{{ asset('bundles/wynajemblog/css/ie.css') }}">#}
+    <![endif]-->
+
+    <!--[if lte IE 8]>
+
+    <script src="{{ asset('bundles/wynajemblog/javascripts/vendor/respond.js') }}"></script>
+    <script src="{{ asset('bundles/wynajemblog/javascripts/vendor/excanvas.js') }}') }}"></script>
+
+
+    <!--<script src="{{ asset('bundles/wynajemblog/vendor/respond/respond.js') }}"></script>-->
+    <!--<script src="{{ asset('bundles/wynajemblog/vendor/excanvas/excanvas.js') }}"></script>-->
+    <![endif]-->
+
+</head>
+<body>
+<div class="body">
+    <header id="header">
+        <div class="container">
+            <div class="logo">
+                <a href="{{ path('blog_news') }}">
+                    <img alt="" width="90" height="90" style="fill:orange;" data-sticky-width="40"
+                         data-sticky-height="40" src="{{ asset('bundles/wynajemblog/img/tools/tool2.png') }}">
+                </a>
+            </div>
+            <div class="search">
+                <form id="searchForm" action="{{ path('blog_search') }}" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control search" name="search"
+                               value="{{ searchParam is defined ? searchParam : '' }}" id="q" placeholder="Wyszukaj..."
+                               required>
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+								</span>
+                    </div>
+                </form>
+            </div>
+            <nav>
+                <ul class="nav nav-pills nav-top">
+                    <li>
+                        <a href="{{ path('blog_contact') }}"><i class="fa fa-angle-right"></i>Kontakt</a>
+                    </li>
+                    <li class="phone">
+                        <span><i class="fa fa-phone"></i>(123) 456-7890</span>
+                    </li>
+                </ul>
+            </nav>
+            <button class="btn btn-responsive-nav btn-inverse" data-toggle="collapse" data-target=".nav-main-collapse">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+        <div class="navbar-collapse nav-main-collapse collapse">
+            <div class="container">
+                <nav class="nav-main mega-menu">
+                    <ul class="nav nav-pills nav-main" id="mainMenu">
+                        {{ print_menu_list() }}
+                        {% if app.user %}
+                            <li class="dropdown mega-menu-item mega-menu-signin signin logged" id="headerAccount">
+                                <a class="dropdown-toggle" href="{{ path('user_accountSettings') }}">
+                                    <i class="fa fa-user"></i> {{ app.user.username }}
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <div class="mega-menu-content">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="user-avatar">
+                                                        <div class="img-thumbnail">
+                                                            <img src="/{{ app.user.avatar }}" alt="">
+                                                        </div>
+                                                        <p><strong>{{ app.user.username }}</strong><span></span></p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <ul class="list-account-options">
+                                                        <li>
+                                                            <a href="{{ path('user_accountSettings') }}">Ustawienia
+                                                                konta</a>
+                                                        </li>
+                                                        {% if is_granted('ROLE_ADMIN') %}
+                                                            <li>
+                                                                <a href="{{ path('admin_dashboard') }}">Panel
+                                                                    administratora</a>
+                                                            </li>
+                                                        {% endif %}
+                                                        <li>
+                                                            <a href="{{ path('_logout') }}">Wyloguj </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% else %}
+
+                            {% if app.request.get('_route') == 'blog_login' %}
+                                <li class="mega-menu-item mega-menu-signin signin active" >
+                            {% else %}
+                                <li class="mega-menu-item mega-menu-signin signin" >
+                            {% endif %}
+                            <a  href="{{ path('blog_login') }}">
+                                <i class="fa fa-user"></i> Zaloguj się
+
+                            </a>
+
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    {% spaceless %}{% block contentTitle %}{% endblock %}{% endspaceless %}
+
+    {% block content %}{% endblock %}
+
+    {% if hideSidebar is not defined %}
+    <div class="col-md-3">
+        <aside class="sidebar">
+
+            <form action="{{ path('blog_search') }}">
+                <div class="input-group input-group-lg">
+                    <input class="form-control" placeholder="Szukaj..." name="search"
+                           value="{{ searchParam is defined ? searchParam : '' }}" id="s" type="text">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary btn-lg"><i
+                                            class="fa fa-search"></i></button>
+                            </span>
+                </div>
+            </form>
+
+            <hr/>
+
+            <h4>Kategorie</h4>
+            {{ print_categories_list() }}
+            {{ print_tags_list() }}
+
+            <hr/>
+            {{ print_recent_commented() }}
+
+        </aside>
+    </div>
+</div>
+
+</div>
+
+</div>
+
+{% endif %}
+
+<footer id="footer" class="dark narrow">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <ul class="nav nav-pills nav-main">
+                    {{ print_menu_list() }}
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <div class="narrow-phone">
+                    <h5 class="short">Kontakt</h5>
+                    <span class="phone">(800) 123-4567</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <p>© Copyright 2015. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+{% javascripts
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/jquery.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/jquery.appear.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/jquery.easing.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/jquery-cookie.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/bootstrap.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/common.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/jquery.validation.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/jquery.stellar.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/jquery.easy-pie-chart.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/jquery.gmap.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/jquery.isotope.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/owl.carousel.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/jflickrfeed.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/jquery.magnific-popup.js'
+'@WynajemBlogBundle/Resources/public/javascripts/vendor/vide.js'
+
+'@WynajemBlogBundle/Resources/public/javascripts/js/theme.js'
+
+'@WynajemBlogBundle/Resources/public/javascripts/js/custom.js'
+
+'@WynajemBlogBundle/Resources/public/javascripts/js/theme.init.js'
+
+filter='?uglifyjs2'
+output = '/assets/js/compiled.js' %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+<!-- Vendor -->
+
+{% block map %}
+
+{% endblock %}
+
+</body>
+</html>

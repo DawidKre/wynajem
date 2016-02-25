@@ -1,0 +1,15 @@
+wynajem_admin:
+    resource: "@WynajemAdminBundle/Resources/config/routing.yml"
+    prefix:   /admin-panel
+
+common_user_admin:
+    resource: "@CommonUserBundle/Resources/config/routing-admin.yml"
+    prefix:   /admin-panel/users
+common_user:
+    resource: "@CommonUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+wynajem_blog:
+    resource: "@WynajemBlogBundle/Resources/config/routing.yml"
+    prefix:   /
+

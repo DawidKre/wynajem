@@ -1,0 +1,10 @@
+1. Wyszukiwanie w panelu administratora             // Zakomentowane
+2. JS od filtracji !!!!
+3. Ikonki AKcji w listach postów  !!!!
+4. Widoki dodawania postu, ustawien uzytkownika, !!!!
+5. Wyświetlanie powiadomienia  !!!!!
+6. Sekcja produkty  !!!!!
+7. Usuwanie produktów JS, csrf !!!!!
+8. Tabelka z produktami
+9. Logowanie
+10.Encja z ustawieniami

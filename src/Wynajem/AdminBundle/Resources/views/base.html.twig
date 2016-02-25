@@ -1,0 +1,206 @@
+<!doctype html>
+<html class="scroll">
+<head>
+    <!-- Basic -->
+    <meta charset="UTF-8">
+
+    <title>{% spaceless %}{% block pageTitle %}Wynajem Admin Panel{% endblock %}{% endspaceless %}</title>
+    <meta name="keywords" content="HTML5 Admin Template"/>
+    <meta name="description" content="Panel Administracyjny wynajem sprzętu budowlanego">
+    <meta name="author" content="okler.net">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <!-- Web Fonts  -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
+          rel="stylesheet" type="text/css">
+
+    {% stylesheets
+    '@WynajemAdminBundle/Resources/public/assets/vendor/bootstrap/css/bootstrap.css'
+    '@WynajemAdminBundle/Resources/public/assets/vendor/font-awesome/css/font-awesome.css'
+    '@WynajemAdminBundle/Resources/public/assets/vendor/magnific-popup/magnific-popup.css'
+    '@WynajemAdminBundle/Resources/public/assets/vendor/bootstrap-datepicker/css/datepicker3.css'
+
+    '@WynajemAdminBundle/Resources/public/assets/stylesheets/theme.css'
+
+    '@WynajemAdminBundle/Resources/public/assets/stylesheets/skins/default.css'
+
+    '@WynajemAdminBundle/Resources/public/assets/stylesheets/theme-custom.css'
+
+    filter='?uglifycss'
+    filter='?cssrewrite'
+    output = '/assets/css/compiledadmin.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+
+    {% stylesheets 'bundles/wynajemblog/vendor/fontawesome/css/font-awesome.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+
+
+    {% javascripts
+    '@WynajemAdminBundle/Resources/public/assets/vendor/modernizr/modernizr.js'
+    filter='?uglifyjs2'
+    output = '/admin/assets/js/compiledadmin.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+
+</head>
+<body>
+<section class="body">
+
+    <!-- start: header -->
+    <header class="header">
+        <div class="logo-container">
+            <a href="{{ path('blog_index') }}" class="logo">
+                <img src="{{ asset('bundles/wynajemblog/img/tools/tool2.png') }}" height="35"
+                     alt="Porto Admin"/>
+            </a>
+            <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html"
+                 data-fire-event="sidebar-left-opened">
+                <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+            </div>
+        </div>
+
+        <!-- start: search & user box -->
+        <div class="header-right">
+            <div id="userbox" class="userbox">
+                <a href="#" data-toggle="dropdown">
+                    <figure class="profile-picture">
+                        <img src="{{ asset(app.user.avatar) }}" alt="Joseph Doe" class="img-circle"
+                             data-lock-picture="assets/images/!logged-user.jpg"/>
+                    </figure>
+                    <div class="profile-info">
+                        <span class="name">{{ app.user.username }}</span>
+                        <span class="role">administrator</span>
+                    </div>
+                    <i class="fa custom-caret"></i>
+                </a>
+                <div class="dropdown-menu">
+                    <ul class="list-unstyled">
+                        <li class="divider"></li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="{{ path('user_accountSettings') }}"><i
+                                        class="fa fa-user"></i> Mój profil</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" tabindex="-1" href="{{ path('_logout') }}">
+                                <i class="fa fa-power-off"></i>Wyloguj się </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- end: search & user box -->
+    </header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <aside id="sidebar-left" class="sidebar-left">
+
+            <div class="sidebar-header">
+                <div class="sidebar-title">
+                    Nawigacja
+                </div>
+                <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html"
+                     data-fire-event="sidebar-left-toggle">
+                    <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+                </div>
+            </div>
+
+            <div class="nano">
+                <div class="nano-content">
+                    <nav id="menu" class="nav-main" role="navigation">
+                        <ul class="nav nav-main">
+                            <li>
+                                <a href="{{ path('admin_dashboard') }}">
+                                    <i class="fa fa-home" aria-hidden="true"></i>
+                                    <span>Pulpit</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_postsList') }}">
+                                    <i class="fa fa-tasks" aria-hidden="true"></i>
+                                    <span>Posty</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_productsList') }}">
+                                    <i class="fa fa-wrench" aria-hidden="true"></i>
+                                    <span>Produkty</span>
+                                </a>
+                            </li>
+                            <li class="nav-parent">
+                                <a>
+                                    <i class="fa fa-copy" aria-hidden="true"></i>
+                                    <span>Taksonomie</span>
+                                </a>
+                                <ul class="nav nav-children">
+                                    <li>
+                                        <a href="{{ path('admin_categoriesList') }}">
+                                            Kategorie
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('admin_tagsList') }}">
+                                            Tagi
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="{{ path('user_adminUsersList') }}">
+                                    <i class="fa fa-users" aria-hidden="true"></i>
+                                    <span>Użytkownicy</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <hr class="separator"/>
+                </div>
+            </div>
+        </aside>
+        <!-- end: sidebar -->
+        {% if form is defined %}
+            {% form_theme form 'WynajemAdminBundle:Form:form_template.html.twig' %}
+        {% endif %}
+        <!-- start: page -->
+        {% block content %}
+
+        {% endblock %}
+        <!-- end: page -->
+    </div> <!-- .col-md-12 -->
+    {#</div> <!-- .row -->#}
+    {#</div> <!-- .container -->#}
+
+
+<!-- Vendor -->
+
+{% javascripts
+'@WynajemAdminBundle/Resources/public/assets/vendor/jquery/jquery.js'
+'@WynajemAdminBundle/Resources/public/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js'
+'@WynajemAdminBundle/Resources/public/assets/vendor/bootstrap/js/bootstrap.js'
+'@WynajemAdminBundle/Resources/public/assets/vendor/nanoscroller/nanoscroller.js'
+'@WynajemAdminBundle/Resources/public/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js'
+'@WynajemAdminBundle/Resources/public/assets/vendor/magnific-popup/magnific-popup.js'
+'@WynajemAdminBundle/Resources/public/assets/vendor/jquery-placeholder/jquery.placeholder.js'
+
+'@WynajemAdminBundle/Resources/public/assets/javascripts/theme.js'
+'@WynajemAdminBundle/Resources/public/assets/javascripts/theme.custom.js'
+'@WynajemAdminBundle/Resources/public/assets/javascripts/theme.init.js'
+
+
+filter='?uglifyjs2'
+output = '/admin/assets/js/compiledadmin.js' %}
+
+<script src="{{ asset_url }}"></script>
+
+{% endjavascripts %}
+
+</section>
+</body>
+</html>

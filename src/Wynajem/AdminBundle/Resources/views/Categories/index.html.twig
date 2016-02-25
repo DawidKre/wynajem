@@ -1,0 +1,83 @@
+{% extends 'WynajemAdminBundle::base.html.twig' %}
+
+{% set pageTitle = 'Kategorie' %}
+{% block pageTitle %}
+    {{ parent() }} - Kategorie
+{% endblock %}
+
+{% block content %}
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>{{ pageTitle }} </h2>
+        </header>
+        {% if app.session.flashBag.has('success') or app.session.flashBag.has('error') %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7">
+                        {% for success in app.session.flashBag.get('success') %}
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <strong>Sukces!</strong> {{ success }}
+                            </div>
+                        {% endfor %}
+                        {% for error in app.session.flashBag.get('error') %}
+                            <div class="alert alert-danger alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <strong>Błąd!</strong> {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Kategorie</div>
+                        <div class="panel-body">
+                            <ul class="nav nav-pills">
+                                <li><a href="{{ path('admin_categoryForm') }}">Dodaj nową</a></li>
+                            </ul>
+                            <div class="clearfix"></div>
+                            <div style="margin-top: 20px;"  class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>{{ knp_pagination_sortable(pagination, 'ID', 't.id') }}</th>
+                                        <th>{{ knp_pagination_sortable(pagination, 'Nazwa', 'p.name') }}</th>
+                                        <th>{{ knp_pagination_sortable(pagination, 'Ilość przypisanych produktów', 'postsCount') }}</th>
+                                        <th class="actions">Akcje</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for row in pagination %}
+                                        {% set category = row[0] %}
+                                        {% set editPath = path('admin_categoryForm', {'id': category.id}) %}
+                                        <tr>
+                                            <td>{{ category.id }}</td>
+                                            <td><a href="{{ editPath }}">{{ category.name }}</a></td>
+                                            <td>{{ row['productsCount'] }}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="{{ editPath }}" class="btn btn-primary"><span
+                                                                class="fa fa-edit"></span></a>
+                                                    <a href="{{ path('admin_categoryDelete', {'id': category.id}) }}"
+                                                       class="btn btn-danger"><span class="fa fa-trash"></span></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {{ knp_pagination_render(pagination, 'WynajemAdminBundle:Pagination:admin_pagination.html.twig') }}
+                        </div>  <!-- .panel-body -->
+                    </div>  <!-- .panel -->
+                </div> <!-- .col-md-12 -->
+            </div> <!-- .row -->
+        </div> <!-- .container -->
+    </section>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'WynajemAdminBundle::base.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} - Profil użytkownika "{{ user.username }}"
+{% endblock %}
+
+{% block content %}
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2> Użytkownicy</h2>
+        </header>
+        {% if app.session.flashBag.has('success') or app.session.flashBag.has('error') %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10">
+
+                        {% for success in app.session.flashBag.get('success') %}
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <strong>Sukces!</strong> {{ success }}
+                            </div>
+                        {% endfor %}
+
+                        {% for error in app.session.flashBag.get('error') %}
+                            <div class="alert alert-danger alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <strong>Błąd!</strong> {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="container">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Dane podstawowe
+                        </div>
+                        <div class="panel-body">
+                            {{ form_row(form.username) }}
+                            {{ form_row(form.email) }}
+                            {{ form_row(form.roles, {'attr': {'class': 'select-block'}}) }}
+                        </div>
+                    </div>
+                </div> <!-- .col-md-8 -->
+
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Akcje
+                                </div>
+                                <div class="panel-body">
+                                    <button class="btn btn-primary">Zapisz</button>
+                                </div>
+                            </div>
+                        </div>  <!-- .col-md-12 -->
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Dostepność
+                                </div>
+                                <div class="panel-body account-checkbox">
+                                    {% set labelWidth = 9 %}
+                                    {% set wrapperWidth = 3 %}
+                                    {{ form_row(form.accountExpired, {'label_length': labelWidth, 'wrapper_length': wrapperWidth}) }}
+                                    {{ form_row(form.accountLocked, {'label_length': labelWidth, 'wrapper_length': wrapperWidth}) }}
+                                    {{ form_row(form.credentialsExpired, {'label_length': labelWidth, 'wrapper_length': wrapperWidth}) }}
+                                    {{ form_row(form.enabled, {'label_length': labelWidth, 'wrapper_length': wrapperWidth}) }}
+                                </div> <!-- .panel-body -->
+                            </div> <!-- .panel -->
+                        </div> <!-- .col-md-12 -->
+                    </div> <!-- .row -->
+                </div> <!-- .col-md-4 -->
+            </div> <!-- .row -->
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+    </div> <!-- .container -->
+{% endblock %}

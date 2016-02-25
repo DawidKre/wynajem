@@ -1,0 +1,53 @@
+{% extends 'WynajemBlogBundle::base.html.twig' %}
+{% set hideSidebar = true %}
+{% block pageTitle %} Logowanie i rejestracja {{ parent() }} {% endblock %}
+
+
+{% block content %}
+    <div role="main" class="main">
+        <section class="page-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Logowanie i rejestracja</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="row">
+                {% include 'WynajemBlogBundle:Template:flashMsg.html.twig' %}
+                <div class="col-md-12">
+                    <div class="row featured-boxes login">
+                        <div class="col-sm-6">
+                            <div class="featured-box featured-box-secundary default info-content">
+                                <div class="box-content">
+                                    <h4>Zaloguj się</h4>
+                                    {% form_theme loginForm 'WynajemBlogBundle:Form:form_template.html.twig' %}
+                                    {{ form(loginForm, {'action': path('_check_path')}) }}
+                                </div>
+                            </div>
+                            <div class="featured-box featured-box-secundary default info-content">
+                                <div class="box-content">
+                                    <h4>Przypomnij hasło</h4>
+                                    {% form_theme rememberPasswdForm 'WynajemBlogBundle:Form:form_template.html.twig' %}
+                                    {{ form(rememberPasswdForm, {'attr': {'novalidate': 'novalidate'}}) }}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="featured-box featured-box-secundary default info-content">
+                                <div class="box-content">
+                                    <h4>Zarejestruj się</h4>
+                                    {% form_theme registerUserForm 'WynajemBlogBundle:Form:form_template.html.twig' %}
+                                    {{ form(registerUserForm, {'attr': {'novalidate': 'novalidate'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,8 @@
+/* Add here all your CSS customizations */
+
+
+footer .nav > li > a:hover,
+footer .nav > li > a:focus {
+    text-decoration: none;
+    background-color: #ED850F;
+}

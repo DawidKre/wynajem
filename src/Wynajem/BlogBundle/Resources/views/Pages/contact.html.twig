@@ -1,0 +1,125 @@
+{% extends 'WynajemBlogBundle::base.html.twig' %}
+{% set hideSidebar = true %}
+{% block pageTitle %} Kontakt {{ parent() }} {% endblock %}
+
+
+{% block content %}
+    <div role="main" class="main">
+
+        <section class="page-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Kontakt</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Google Maps - Go to the bottom of the page to change settings and map location. -->
+        <div id="googlemaps" class="google-map"></div>
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-6">
+
+                    <div class="alert alert-success hidden" id="contactSuccess">
+                        <strong>Success!</strong> Twoja wiadomość została wysłana.
+                    </div>
+
+                    <div class="alert alert-danger hidden" id="contactError">
+                        <strong>Error!</strong> Wystąpił błąd podczas wysyłania wiadomości.
+                    </div>
+                    <h2 class="short" id="contact"><strong>Kontakt</strong></h2>
+                    {% include 'WynajemBlogBundle:Template:flashMsg.html.twig' %}
+
+                    <div class="form-group">
+                        {% form_theme form 'WynajemBlogBundle:Form:form_template.html.twig' %}
+                        {{ form(form, {'action': '#contact', 'attr': {'novalidate': 'novalidate' }}) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    <h4 class="push-top">Get in <strong>touch</strong></h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget leo at velit imperdiet
+                        varius. In eu ipsum vitae velit congue iaculis vitae at risus.</p>
+                    <hr/>
+                    <h4><strong>Biuro</strong></h4>
+                    {% include 'WynajemBlogBundle:Template:aboutList.html.twig' %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts '@WynajemBlogBundle/Resources/public/javascripts/js/views/view.contact.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{#{% block javascripts %}#}
+    {#<script src="{{ asset('bundles/wynajemblog/js/views/view.contact.js') }}"></script>#}
+{#{% endblock %}#}
+
+
+{% block map %}
+    <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script>
+
+        /*
+         Map Settings
+
+         Find the Latitude and Longitude of your address:
+         - http://universimmedia.pagesperso-orange.fr/geo/loc.htm
+         - http://www.findlatitudeandlongitude.com/find-address-from-latitude-and-longitude/
+
+         */
+
+        // Map Markers
+        var mapMarkers = [{
+            address: "Kowala Pierwsza 44C",
+            html: "<strong>Kowala Pierwsza</strong><br>24-320 Poniatowa",
+            icon: {
+                image: "img/pin.png",
+                iconsize: [26, 46],
+                iconanchor: [12, 46]
+            },
+            popup: true
+        }];
+
+        // Map Initial Location
+        var initLatitude = 52.75198;
+        var initLongitude = 21.96;
+
+        // Map Extended Settings
+        var mapSettings = {
+            controls: {
+                draggable: true,
+                panControl: true,
+                zoomControl: true,
+                mapTypeControl: true,
+                scaleControl: true,
+                streetViewControl: true,
+                overviewMapControl: true
+            },
+            scrollwheel: false,
+            markers: mapMarkers,
+            center: {lat: initLatitude, lng: initLongitude},
+            zoom: 15
+        };
+
+        var map = $("#googlemaps").gMap(mapSettings);
+
+        // Map Center At
+        var mapCenterAt = function (options, e) {
+            e.preventDefault();
+            $("#googlemaps").gMap("centerAt", options);
+        }
+
+    </script>
+
+{% endblock %}

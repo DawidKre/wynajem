@@ -1,0 +1,16 @@
+common_user_login:
+    resource: "@CommonUserBundle/Controller/LoginController.php"
+    type:     annotation
+    prefix:    /
+
+common_user_user:
+    resource: "@CommonUserBundle/Controller/UserController.php"
+    type:     annotation
+    prefix:    /
+
+_check_path:
+    path: /login_check
+#    defaults: { _controller: CommonUserBundle:Login:login }
+
+_logout:
+    path: /logout

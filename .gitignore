@@ -1,0 +1,24 @@
+#/web/bundles/
+/app/cache/*
+/app/logs/*
+!app/cache/.gitkeep
+!app/logs/.gitkeep
+/app/phpunit.xml
+/build/
+/.idea/
+/composer.phar
+/app/config/parameters.yml
+/app/config/parameters.ini
+
+# Managed by Composer
+/app/bootstrap.php.cache
+/var/bootstrap.php.cache
+/bin/*
+!app/console
+!app/SymfonyRequirements
+/vendor/
+/web/bundles/
+/web/uploads/
+/web/css/*
+web/js/*
+

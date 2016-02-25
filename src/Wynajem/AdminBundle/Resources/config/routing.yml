@@ -1,0 +1,24 @@
+wynajem_admin_dashboard:
+  resource: "@WynajemAdminBundle/Controller/DashboardController.php"
+  type: annotation
+  prefix: /dashboard
+
+wynajem_admin_categories:
+  resource: "@WynajemAdminBundle/Controller/CategoriesController.php"
+  type: annotation
+  prefix: /categories
+
+wynajem_admin_posts:
+  resource: "@WynajemAdminBundle/Controller/PostsController.php"
+  type: annotation
+  prefix: /posts
+
+wynajem_admin_tags:
+  resource: "@WynajemAdminBundle/Controller/TagsController.php"
+  type: annotation
+  prefix: /tags
+
+wynajem_admin_products:
+  resource: "@WynajemAdminBundle/Controller/ProductsController.php"
+  type: annotation
+  prefix: /products

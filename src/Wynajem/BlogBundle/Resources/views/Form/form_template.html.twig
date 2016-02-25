@@ -1,0 +1,87 @@
+{%- block form_start -%}
+    {% set method = method|upper %}
+    {%- if method in ["GET", "POST"] -%}
+        {% set form_method = method %}
+    {%- else -%}
+        {% set form_method = "POST" %}
+    {%- endif -%}
+
+    <form
+    name="{{ name }}" method="{{ form_method|lower }}"{% if action != '' %} action="{{ action }}"{% endif %}{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {%- if form_method != method -%}
+        <input type="hidden" name="_method" value="{{ method }}"/>
+    {%- endif -%}
+{%- endblock form_start -%}
+
+{#{% form_theme form_self %}#}
+
+{% block form_row %}
+    {% spaceless %}
+        <div class="row">
+            <div class="form-group{% if errors|length > 0 %} error{% endif %}">
+                <div class="col-md-12">
+                    {{ form_label(form) }}
+
+                    {{ form_widget(form) }}
+
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}
+
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    <input type="{{ type }}" {{ block('widget_attributes') }}
+           class="form-control input-lg" {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple -%}
+
+
+{%- block checkbox_widget -%}
+
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"
+           {% endif %}checked="checked"/>
+
+{%- endblock checkbox_widget -%}
+
+{% block button_row %}
+    {% spaceless %}
+        {{ form_widget(form) }}
+    {% endspaceless %}
+{% endblock button_row %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% for error in errors %}
+                <span>{{ error.message|trans }}</span>
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block submit_widget %}
+    {% spaceless %}
+        <div class="row">
+            <div class="col-md-12">
+            {% set type = type|default('submit') %}
+            {% set attr = attr|merge({'class': 'btn btn-primary'}) %}
+            {{ block('button_widget') }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock submit_widget %}
+{% block checkbox_row %}
+    {% spaceless %}
+        {#<div class="row">#}
+        {#<div class="col-md-12">#}
+        <span class="form-row checkbox{% if errors|length > 0 %} error{% endif %}">
+            <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {{ form_widget(form) }} {{ form.vars.label }}
+            </label>
+        </span>
+        {#</div>#}
+        {#</div>#}
+    {% endspaceless %}
+{% endblock %}

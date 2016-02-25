@@ -1,0 +1,62 @@
+{% extends 'WynajemAdminBundle::base.html.twig' %}
+
+{% set pageTitle = 'Edycja tagów' %}
+{% block pageTitle %}
+    {% if tag.id is null %}
+        {{ parent() }} - Dodawanie nowego Tagu
+    {% else %}
+        {{ parent() }} - Edycja tagu "{{ tag.name }}"
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <section role="main" class="content-body">
+    <header class="page-header">
+        <h2>{{ pageTitle }} </h2>
+    </header>
+    {% if app.session.flashBag.has('success') or app.session.flashBag.has('error') %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    {% for success in app.session.flashBag.get('success') %}
+                        <div class="alert alert-success alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                            <strong>Sukces!</strong> {{ success }}
+                        </div>
+                    {% endfor %}
+
+                    {% for error in app.session.flashBag.get('error') %}
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                            <strong>Błąd!</strong> {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {% if tag.id is null %}
+                            Dodawanie nowego Tagu
+                        {% else %}
+                            Edycja tagu "{{ tag.name }}"
+                        {% endif %}
+                    </div>
+                    <div class="panel-body">
+                        {{ form_start(form) }}
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.save, {'attr': {'class': 'pull-right'}}) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div> <!-- .panel -->
+            </div> <!-- .col-md-12 -->
+        </div> <!-- .row -->
+    </div> <!-- .container -->
+{% endblock %}

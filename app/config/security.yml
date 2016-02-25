@@ -1,0 +1,74 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+#security:
+#
+#    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+#    providers:
+#        in_memory:
+#            memory: ~
+#
+#    firewalls:
+#        # disables authentication for assets and the profiler, adapt it according to your needs
+#        dev:
+#            pattern: ^/(_(profiler|wdt)|css|images|js)/
+#            security: false
+#
+#        main:
+#            anonymous: ~
+#            # activate different ways to authenticate
+#
+#            # http_basic: ~
+#            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+#
+#            # form_login: ~
+#            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+security:
+    encoders:
+        Common\UserBundle\Entity\User:
+            algorithm: bcrypt
+
+
+    providers:
+        blog_users:
+            entity:
+                class: CommonUserBundle:User
+                property: username
+
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        blog_security:
+            switch_user: true
+            pattern:    ^/
+            anonymous: ~
+            form_login:
+                check_path: _check_path
+                login_path: blog_login
+                default_target_path: blog_news
+                username_parameter: login[username]
+                password_parameter: login[password]
+            logout:
+                path:   _logout
+                target: blog_news
+            remember_me:
+                key:      "%secret%"
+                lifetime: 31536000 # 365 days in seconds
+                path:     /
+                domain:   ~ # Defaults to the current domain from $_SERVER
+                remember_me_parameter: login[remember_me]
+            #
+            #http_basic:
+            #    realm: "Secured Demo Area"
+
+    access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/account-settings, roles: ROLE_USER }
+        - { path: ^/admin-panel, roles: ROLE_EDITOR }
+
+    role_hierarchy:
+        ROLE_EDITOR:    ROLE_USER
+        ROLE_ADMIN:       [ROLE_EDITOR, ROLE_USER]
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_EDITOR, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]

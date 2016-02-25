@@ -1,0 +1,172 @@
+{% extends 'WynajemAdminBundle::base.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} - Produkty
+{% endblock %}
+
+{% block content %}
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>Produkty </h2>
+        </header>
+        {% if app.session.flashBag.has('success') or app.session.flashBag.has('error') %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7">
+
+                        {% for success in app.session.flashBag.get('success') %}
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <strong>Sukces!</strong> {{ success }}
+                            </div>
+                        {% endfor %}
+
+                        {% for error in app.session.flashBag.get('error') %}
+                            <div class="alert alert-danger alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <strong>Błąd!</strong> {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Wyszukiwanie i filtracja
+                        </div>
+                        <div class="panel-body">
+                            <form action="{{ path('admin_productsList') }}" method="get"
+                                  class="form-inline filter-search limit" role="form">
+                                <div class="form-group">
+                                    <input type="text" name="titleLike" value="{{ queryParams['titleLike'] }}" class="form-control" placeholder="Wyszukaj po tytule">
+                                </div>
+
+                                <div class="form-group">
+                                    <select name="categoryId" class="select-block" placeholder="Kategoria" onchange="this.form.submit()">
+                                    <option {{ -2 == queryParams['categoryId'] ? 'selected="selected"':'Wszystkie kategorie' }} value="-2">Wszystkie kategorie</option>
+                                    <option {{ -1 == queryParams['categoryId'] ? 'selected="selected"':'' }} value="-1">Brak kategorii</option>
+                                    {% for category in categoriesList %}
+                                    <option {{ category['id'] == queryParams['categoryId'] ? 'selected="selected"':'' }} value="{{ category['id'] }}">{{ category['name'] }}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <button class="btn btn-primary">Filtruj</button>
+                                </div>
+
+                                <div class="form-group pull-right limit">
+                                    <label for="inputEmail1" class="col-lg-5 control-label">Wyników</label>
+                                    <div class="col-lg-7">
+                                        <select name="limit" class="select-block" id="limit" placeholder="Pokaż" onchange="this.form.submit()">
+                                            {% for limit in limits %}
+                                            <option {{ currLimit == limit ? 'selected="selected"':'' }} value="{{ limit }}">
+                                            {{ limit }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Produkty
+                        </div>
+                        <div class="panel-body">
+                            <ul class="nav nav-pills pull-left">
+                                {% for key,val in statusesList %}
+                                    <li {{ currStatus == val ? 'class="active"':'' }}>
+                                        <a href="{{ path('admin_productsList', {'status': val}) }}">
+                                            {{ key }} ({{ statistics[val] }})
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                            <ul class="nav nav-pills pull-right">
+                                <li><a href="{{ path('admin_productForm') }}">Dodaj nowy</a></li>
+                            </ul>
+                            <div class="clearfix"></div>
+                            <div style="margin-top: 20px;" class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>{{ knp_pagination_sortable(pagination, 'ID', 'p.id') }}</th>
+                                        <th>{{ knp_pagination_sortable(pagination, 'Nazwa', 'p.name') }}</th>
+                                        <th>{{ knp_pagination_sortable(pagination, 'Kategoria', 'c.id') }}</th>
+                                        <th>Tagi</th>
+                                        <th>{{ knp_pagination_sortable(pagination, 'Data utworzenia', 'p.addDate') }}</th>
+                                        <th>{{ knp_pagination_sortable(pagination, 'Cena za godzine', 'p.priceForHour') }}</th>
+                                        <th>{{ knp_pagination_sortable(pagination, 'Cena za dobe', 'p.priceForDay') }}</th>
+                                        <th class="actions">Edytuj/Usuń</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for product in pagination %}
+                                        <tr>
+                                            <td>{{ product.id }}</td>
+                                            <td>{{ product.name }}</td>
+                                            <td>
+                                                {% if product.category is null %}
+                                                    brak kategorii
+                                                {% else %}
+                                                    {{ product.category.name|capitalize }}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% for tag in product.tags %}
+                                                    <a href="{{ path('admin_tagForm', {'id': tag.id}) }}">
+                                                        <span class="label label-info">{{ tag.name }}</span>
+                                                    </a>
+                                                {% else %}
+                                                    Brak tagów
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {{ product.addDate|admin_format_date }}
+                                            </td>
+                                            <td>{{ product.priceForHour }}</td>
+                                            <td>{{ product.priceForDay }}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="{{ path('admin_productForm', {'id': product.id}) }}"
+                                                       class="btn btn-primary">
+                                                        <span class="fa fa-edit"></span>
+                                                    </a>
+                                                    {% if is_granted('ROLE_ADMIN') %}
+                                                        {% set tokenName = csrf_token(deleteTokenName|format(product.id)) %}
+                                                        {% set deleteUrl = path('admin_productDelete', {'id': product.id, 'token': tokenName}) %}
+                                                        <a href="{{ deleteUrl }}" class="btn btn-danger"
+                                                           data-confirmAction="">
+                                                            <span class="fa fa-trash"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="8">Brak dopasowanych postów</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {{ knp_pagination_render(pagination, 'WynajemAdminBundle:Pagination:admin_pagination.html.twig') }}
+                        </div> <!-- .panel-body -->
+                    </div> <!-- .panel -->
+                </div>
+
+    </section>
+
+{% endblock %}

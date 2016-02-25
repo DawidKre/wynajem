@@ -1,0 +1,5 @@
+services:
+    air_admin.twig.extension.admin:
+        class: Wynajem\AdminBundle\Twig\Extension\AdminExtension
+        tags:
+            - { name: twig.extension }

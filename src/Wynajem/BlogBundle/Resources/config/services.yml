@@ -1,0 +1,13 @@
+services:
+    wynajem_blog.twig.extension.blog:
+        class: Wynajem\BlogBundle\Twig\Extension\BlogExtension
+        arguments: ["@doctrine", "@security.authorization_checker"]
+        tags:
+            - { name: twig.extension }
+
+
+
+#    wynajem_blog.example:
+#        class: Wynajem\BlogBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+

@@ -1,0 +1,114 @@
+{% extends 'WynajemAdminBundle::base.html.twig' %}
+
+{% set pageTitle = product.id is null ? 'Dodawanie nowego produktu' : 'Edycja produktu "%s"'|format(product.name) %}
+
+{% block pageTitle %}
+    {{ pageTitle }}
+{% endblock %}
+
+{% block content %}
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>{{ pageTitle }} </h2>
+        </header>
+
+        {% if app.session.flashBag.has('success') or app.session.flashBag.has('error') %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10">
+
+                        {% for success in app.session.flashBag.get('success') %}
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <strong>Sukces!</strong> {{ success }}
+                            </div>
+                        {% endfor %}
+
+                        {% for error in app.session.flashBag.get('error') %}
+                            <div class="alert alert-danger alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <strong>Błąd!</strong> {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="container">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">
+                                {{ pageTitle }}
+                            </h2>
+                        </div>
+                        <div class="panel-body">
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.priceForHour) }}
+                            {{ form_row(form.priceForDay) }}
+                            <div class="pull-right">
+                                {{ form_row(form.available) }}
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <h4>Opis produktu</h4>
+                            {{ form_row(form.description) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Akcje
+                                </div>
+                                <div class="panel-body">
+                                    {{ form_row(form.save) }}
+                                </div>
+                            </div>
+                        </div> <!-- .col-md-12 -->
+
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Miniaturka
+                                </div>
+                                <div class="panel-body">
+                                    {% if product.thumbnail is null %}
+                                        <p>Brak miniaturki</p>
+                                    {% else %}
+                                        <p><img src="{{ asset(product.thumbnail) }}" alt="" class="img-thumbnail"></p>
+                                    {% endif %}
+                                    {{ form_widget(form.thumbnailFile) }}
+                                    {{ form_errors(form.thumbnailFile) }}
+                                </div>
+                            </div>
+                        </div> <!-- .col-md-12 -->
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Taksonomie
+                                </div>
+                                <div class="panel-body">
+                                    {{ form_row(form.category, {'label_length': 3, 'wrapper_length': 9, 'attr': {'class': 'select-block form-control'}}) }}
+                                    {{ form_row(form.tags, {'label_length': 3, 'wrapper_length': 9, 'attr': {'class': 'select-block form-control'}}) }}
+                                </div>
+                            </div>
+                        </div> <!-- .col-md-12 -->
+                    </div>
+                </div>
+
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </section>
+    </div>
+
+{% endblock %}

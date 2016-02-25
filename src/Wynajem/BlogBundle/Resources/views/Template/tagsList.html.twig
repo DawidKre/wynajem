@@ -1,0 +1,11 @@
+<div class="tag-cloud">
+    <h4>Tagi</h4>
+    <div class="tags">
+        {% for tag in tagsList %}
+            <a style="color:#777777; font-size: {{ tag['fontSize'] }}rem"
+               href="{{ path('blog_tag', {'slug': tag['slug']}) }}">
+                {{ tag['name'] }}
+            </a>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<ul class="nav nav-list primary push-bottom">
+    {% for category in categoriesList %}
+        {% if app.request.get('_route') == 'blog_category' and app.request.get('slug') == category.slug %}
+            <li class="active">
+        <a class="active" href="{{ path('blog_category', {'slug': category.slug }) }}">
+        {% else %}
+            <li>
+            <a  href="{{ path('blog_category', {'slug': category.slug }) }}">
+        {% endif %}
+        {{ category.name }}
+        </a>
+        </li>
+    {% endfor %}
+</ul>

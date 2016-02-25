@@ -1,0 +1,24 @@
+blog_regulations:
+    path: /regulations
+    defaults:
+        _controller:  FrameworkBundle:Template:template
+        template:     WynajemBlogBundle:Pages:regulations.html.twig
+
+wynajem_blog_taxonomy:
+    resource: "@WynajemBlogBundle/Controller/TaxonomyController.php"
+    type:     annotation
+    prefix:    /
+wynajem_blog_pages:
+    resource: "@WynajemBlogBundle/Controller/PagesController.php"
+    type:     annotation
+    prefix:    /
+
+wynajem_blog_products:
+    resource: "@WynajemBlogBundle/Controller/ProductsController.php"
+    type:     annotation
+    prefix:    /
+
+wynajem_blog_posts:
+    resource: "@WynajemBlogBundle/Controller/PostsController.php"
+    type:     annotation
+    prefix:    /
