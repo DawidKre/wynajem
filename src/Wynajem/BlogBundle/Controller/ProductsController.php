@@ -2,11 +2,9 @@
 
 namespace Wynajem\BlogBundle\Controller;
 
-use Common\UserBundle\Form\LoginType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
 use Wynajem\BlogBundle\Entity\Product;
 
 class ProductsController extends Controller
@@ -49,22 +47,62 @@ class ProductsController extends Controller
 
 
     /**
-     * @Route("/prices", name="blog_prices")
-     *
+     * @Route(
+     *     "/prices/{status}/{page}",
+     *     name="blog_prices",
+     *     requirements={"page"="\d+"},
+     *     defaults={"status"="all", "page"=1}
+     * )
+     * @param Request $request
+     * @param $status
+     * @param $page
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function pricesAction()
+    public function pricesAction(Request $request, $status, $page)
     {
-        $Session = $this->get('session');
-        $loginForm = $this->createForm(
-            LoginType::class,
-            array(
-                'username' => $Session->get(Security::LAST_USERNAME),
-            )
+        $queryParams = array(
+            'status' => $status,
+            'titleLike' => $request->query->get('titleLike'),
+            'categoryId' => $request->query->get('categoryId'),
         );
 
-        return $this->render('WynajemBlogBundle:Products:prices.html.twig', array(
-            'loginForm2' => $loginForm->createView(),
-        ));
+        $ProductRepository = $this->getDoctrine()->getRepository(Product::class);
+        $statistic = $ProductRepository->getStatistics();
+
+        $qb = $ProductRepository->getQueryBuilder($queryParams);
+
+        $paginationLimit = $this->container->getParameter('admin.pagination_limit');
+        $limits = array(2, 5, 10, 15);
+        $limit = $request->query->get('limit', $paginationLimit);
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($qb, $page, $limit);
+
+        $categoriesList = $this->getDoctrine()->getRepository('WynajemBlogBundle:Category')->getAsArray();
+
+        $statusList = array(
+            'Dostępne' => 'available',
+            'Nie dostępne' => 'unavailable',
+
+        );
+
+        return $this->render(
+            'WynajemBlogBundle:Products:prices.html.twig',
+            array(
+                'currPage' => 'products',
+                'queryParams' => $queryParams,
+                'categoriesList' => $categoriesList,
+
+                'limits' => $limits,
+                'currLimit' => $limit,
+
+                'statusesList' => $statusList,
+                'currStatus' => $status,
+                'statistics' => $statistic,
+
+                'pagination' => $pagination,
+            )
+        );
     }
 
 
@@ -96,6 +134,7 @@ class ProductsController extends Controller
             )
         );
     }
+
     /**
      * @Route("/search/{page}",
      *     name="blog_search",
@@ -129,8 +168,8 @@ class ProductsController extends Controller
 
     public function getProducts(array $params = array(), $page)
     {
-        $PostRepo = $this->getDoctrine()->getRepository(Product::class);
-        $qb = $PostRepo->getQueryBuilder($params);
+        $ProdRepo = $this->getDoctrine()->getRepository(Product::class);
+        $qb = $ProdRepo->getQueryBuilder($params);
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($qb, $page, $this->itemsLimit);
@@ -138,7 +177,6 @@ class ProductsController extends Controller
 
         return $pagination;
     }
-
 
 
 }

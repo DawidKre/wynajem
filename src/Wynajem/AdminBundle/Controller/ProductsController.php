@@ -21,6 +21,10 @@ class ProductsController extends Controller
      *     requirements={"page"="\d+"},
      *     defaults={"status"="all", "page"=1}
      * )
+     * @param Request $request
+     * @param $status
+     * @param $page
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request, $status, $page)
     {
