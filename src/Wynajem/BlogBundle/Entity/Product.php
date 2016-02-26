@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Product
 {
 
-    const DEFAULT_AVATAR = 'default-thumbnail2.jpg';
+    const DEFAULT_AVATAR = 'default-thumbnail.jpg';
     const UPLOAD_DIR = 'uploads/products/';
     /**
      * @var int

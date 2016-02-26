@@ -19,10 +19,10 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Common\UserBundle\CommonUserBundle(),
             new Wynajem\AdminBundle\WynajemAdminBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

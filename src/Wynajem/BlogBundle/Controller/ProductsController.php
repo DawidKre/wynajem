@@ -33,7 +33,8 @@ class ProductsController extends Controller
         );
 
         if ($page > $ProducRepo->getTotalPages($this->itemsLimit)) {
-            return $this->redirect($this->generateUrl('blog_offert'));
+//            return $this->redirect($this->generateUrl('blog_offert'));
+            return $this->redirect($this->get('router')->generate('blog_offert'));
         }
 
         return $this->render(

@@ -18,7 +18,9 @@ class LoginType extends AbstractType
                 'label' =>  'Hasło:'
             ))
             ->add('remember_me', 'checkbox', array(
-                'label' =>  'Zapamiętaj mnie'
+                'label' =>  'Zapamiętaj mnie',
+                'required'  => false
+
             ))
             ->add('save', 'submit', array(
                 'label' =>  'Zaloguj'

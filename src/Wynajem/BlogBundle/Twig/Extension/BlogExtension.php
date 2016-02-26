@@ -6,7 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Wynajem\BlogBundle\Entity\Category;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
-class BlogExtension extends \Twig_Extension
+class BlogExtension extends \Twig_Extension implements \Twig_Extension_InitRuntimeInterface
 {
 
     /**
@@ -52,6 +52,7 @@ class BlogExtension extends \Twig_Extension
     {
         return 'wynajem_blog_extension';
     }
+
 
     public function getFunctions()
     {

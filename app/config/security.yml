@@ -54,7 +54,7 @@ security:
                 path:   _logout
                 target: blog_news
             remember_me:
-                key:      "%secret%"
+                secret:      "%secret%"
                 lifetime: 31536000 # 365 days in seconds
                 path:     /
                 domain:   ~ # Defaults to the current domain from $_SERVER

@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="blog_messages")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Messages
 {
@@ -47,6 +48,33 @@ class Messages
      * @Assert\Length(max="1000")
      */
     private $message;
+
+    /**
+     * @return \DateTime
+     */
+    public function getAddDate()
+    {
+        return $this->addDate;
+    }
+
+    /**
+     * @param \DateTime $addDate
+     * @return Messages
+     */
+    public function setAddDate($addDate)
+    {
+        $this->addDate = $addDate;
+
+        return $this;
+    }
+
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="add_date", type="datetime")
+     */
+    private $addDate;
 
     /**
      * Get id
@@ -125,5 +153,13 @@ class Messages
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->addDate = new \DateTime();
     }
 }
