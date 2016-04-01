@@ -22,7 +22,10 @@ class PostsController extends Controller
      *      requirements={"page"="\d+"},
      *      defaults={"status"="all", "page"=1}
      * )
-     *
+     * @param Request $request
+     * @param $status
+     * @param $page
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request, $status, $page)
     {
@@ -34,9 +37,7 @@ class PostsController extends Controller
         );
 
         $PostRepository = $this->getDoctrine()->getRepository('WynajemBlogBundle:Post');
-
         $statistics = $PostRepository->getStatistics();
-
         $qb = $PostRepository->getQueryBuilder($queryParams);
 
         $paginationLimit = $this->container->getParameter('admin.pagination_limit');
@@ -46,7 +47,6 @@ class PostsController extends Controller
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($qb, $page, $limit);
-
         $categoriesList = $this->getDoctrine()->getRepository('WynajemBlogBundle:Category')->getAsArray();
 
         $statusesList = array(
@@ -88,10 +88,6 @@ class PostsController extends Controller
      */
     public function formAction(Request $Request, $id = null)
     {
-
-        //Param converter
-//    public function formAction(Request $Request, Post $Post) {
-
         if (null == $id) {
             $Post = new Post();
             $Post->setAuthor($this->getUser());
@@ -99,18 +95,10 @@ class PostsController extends Controller
         } else {
             $Post = $this->getDoctrine()->getRepository('WynajemBlogBundle:Post')->find($id);
         }
-
-//        if(null == $Post){
-//            $Post = new Post();
-//            $Post->setAuthor($this->getUser());
-//            $newPostForm = TRUE;
-//        }
-
         $form = $this->createForm(new PostType(), $Post);
-
         $form->handleRequest($Request);
-        if ($form->isValid()) {
 
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($Post);
             $em->flush();

@@ -2,11 +2,16 @@
 
 namespace Wynajem\AdminBundle\Form;
 
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -16,18 +21,12 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => 'Nazwa',
                 'attr' => array(
                     'placeholder' => 'Nazwa'
                 )
             ))
-//            ->add('slug', 'text', array(
-//                'label' => 'Alias',
-//                'attr' => array(
-//                    'placeholder' => 'Alias'
-//                )
-//            ))
             ->add('description', 'ckeditor', array(
                 'label' => 'Treść'
             ))
@@ -42,24 +41,16 @@ class ProductType extends AbstractType
                 'label' => 'Dostępność',
                 'value' => true
             ))
-//            ->add('content', 'textarea', array(
-//                'label' => 'Treść'
-//            ))
-            ->add('thumbnailFile', 'file', array(
+            ->add('thumbnailFile', FileType::class, array(
                 'label' => 'Miniaturka'
             ))
-//            ->add('publishedDate', 'datetime', array(
-//                'label' => 'Data publikacji',
-//                'date_widget' => 'single_text', //pokazać też bez
-//                'time_widget' => 'single_text'
-//            ))
-            ->add('category', 'entity', array(
+            ->add('category', EntityType::class, array(
                 'label' => 'Kategoria',
                 'class' => 'Wynajem\BlogBundle\Entity\Category',
                 'property' => 'name',
                 'empty_value' => 'Wybierz kategorię'
             ))
-            ->add('tags', 'entity', array(
+            ->add('tags', EntityType::class, array(
                 'label' => 'Tagi',
                 'multiple' => true,
                 'class' => 'Wynajem\BlogBundle\Entity\Tag',
@@ -68,7 +59,7 @@ class ProductType extends AbstractType
                     'placeholder' => 'Dodaj tagi'
                 )
             ))
-            ->add('save', 'submit', array(
+            ->add('save',SubmitType::class, array(
                 'label' => 'Zapisz'
             ));
     }

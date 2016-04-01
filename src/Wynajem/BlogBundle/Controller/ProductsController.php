@@ -112,16 +112,9 @@ class ProductsController extends Controller
      *
      */
     public function productAction($slug)
-//  public function productAction($slug, ProductRepository $productRepository)
     {
-
-//         Metoda bez wstrzykiwania do parametrów funkcji
-
         $Product = $this->getDoctrine()->getRepository(Product::class);
         $ProductDesc = $Product->findOneBySlug($slug);
-
-        //Metoda z wstrzykiwaniem
-//        $ProductDescription= $productRepository->findOneBySlug($slug);
 
         if (null === $Product) {
             throw $this->createNotFoundException('Produkt  nie został znaleziony');

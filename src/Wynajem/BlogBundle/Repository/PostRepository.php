@@ -91,7 +91,6 @@ class PostRepository extends EntityRepository
                 ->setParameter('titleLike', $titleLike);
         }
 
-
         return $qb;
 
     }
@@ -100,9 +99,7 @@ class PostRepository extends EntityRepository
         $qb = $this->createQueryBuilder('p')
             ->select('COUNT(p)');
 
-
         $all = (int)$qb->getQuery()->getSingleScalarResult();
-
         $published = (int)$qb->andWhere('p.publishedDate <= :currDate AND p.publishedDate IS NOT NULL')
             ->setParameter('currDate', new \DateTime())
             ->getQuery()

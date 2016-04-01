@@ -3,6 +3,7 @@
 namespace Common\UserBundle\Controller;
 
 
+use Common\UserBundle\Entity\User;
 use Common\UserBundle\Exception\UserException;
 use Common\UserBundle\Form\AccountSettingType;
 use Common\UserBundle\Form\ChangePasswordType;
@@ -12,18 +13,17 @@ use Symfony\Component\HttpFoundation\Request;
 class UserController extends BaseController
 {
 
-
     /**
      *
      * @Route(
      *     "/account-settings",
      *     name="user_accountSettings"
      * )
-     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function accountSettingsAction(Request $request)
     {
-
         $User = $this->getUser();
         $accountSettingsForm = $this->createForm(new AccountSettingType(), $User);
 
@@ -31,9 +31,9 @@ class UserController extends BaseController
             $accountSettingsForm->handleRequest($request);
 
             if ($accountSettingsForm->isValid()) {
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($User);
-
                 $em->flush();
 
                 $this->getSessionFlashBag()->add('success', 'Twoje dane zostały zmienione');
@@ -45,18 +45,14 @@ class UserController extends BaseController
         }
 
         //Change Password
-
         $changePasswordForm = $this->createForm(new ChangePasswordType(), $User);
 
         if ($request->isMethod('POST') && $request->request->has('changePassword')) {
             $changePasswordForm->handleRequest($request);
-
             if ($changePasswordForm->isValid()) {
-
                 try {
                     $userManager = $this->get('user_manager');
                     $userManager->changePassword($User);
-
                     $this->getSessionFlashBag()->add('success', 'Twoje hasło zostało zmienione');
 
                     return $this->redirect($this->generateUrl('user_accountSettings'));

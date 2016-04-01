@@ -16,7 +16,6 @@ class AdminExtension extends \Twig_Extension
     {
         return array(
             'admin_format_date' => new \Twig_SimpleFilter('admin_format_date', array($this, 'adminFormatDate'),array('is_safe' => array('html')))
-//            new \Twig_SimpleFilter('ab_shorten', array($this, 'shorten'), array('is_safe' => array('html')))
         );
     }
 

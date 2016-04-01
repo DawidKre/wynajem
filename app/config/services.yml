@@ -10,6 +10,12 @@ services:
              - { name: twig.extension }
 
 
+#    user_agent_subscriber:
+#        class: Common\UserBundle\EventListener\UserAgentSubscriber
+#        arguments: []
+#        tags:
+#            - { name: kernel.event_subscriber }
+
 
 #    service_name:
 #        class: AppBundle\Directory\ClassName

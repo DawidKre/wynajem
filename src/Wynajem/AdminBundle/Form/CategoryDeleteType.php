@@ -2,7 +2,10 @@
 
 namespace Wynajem\AdminBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
@@ -21,10 +24,10 @@ class CategoryDeleteType extends AbstractType
         $Category = $this->category;
 
         $builder
-            ->add('setNull', 'checkbox', array(
+            ->add('setNull', CheckboxType::class, array(
                 'label' => 'Ustaw wszystkie posty bez kategorii'
             ))
-            ->add('newCategory', 'entity', array(
+            ->add('newCategory', EntityType::class, array(
                 'label' => 'Wybierz nową kategorię dla postów',
                 'empty_value' => 'Wybierz kategorię',
                 'class' => 'Wynajem\BlogBundle\Entity\Category',
@@ -35,7 +38,7 @@ class CategoryDeleteType extends AbstractType
                         ->setParameter('categoryId', $Category->getId());
                 }
             ))
-            ->add('submit', 'submit', array(
+            ->add('submit', SubmitType::class, array(
                 'label' => 'Usuń kategorię'
             ));
     }

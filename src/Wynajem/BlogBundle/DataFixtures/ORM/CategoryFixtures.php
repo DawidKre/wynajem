@@ -45,7 +45,6 @@ class CategoryFixtures extends AbstractFixture implements OrderedFixtureInterfac
 
         }
 
-
         $manager->flush();
 
 

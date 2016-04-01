@@ -52,10 +52,6 @@ class ProductRepository extends EntityRepository
                 ->setParameter('tagSlug', $params['tagSlug']);
         }
 
-//        if(!empty($params['postAuthor'])){
-//            $qb->andWhere('p.author = :postAuthor')
-//                ->setParameter('postAuthor', $params['postAuthor']);
-//        }
         if(!empty($params['categoryId'])) {
             if (-1 == $params['categoryId']) {
                 $qb->andWhere($qb->expr()->isNull('p.category'));
@@ -89,7 +85,6 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->select('COUNT(p)');
-
 
         $all = (int)$qb->getQuery()->getSingleScalarResult();
 

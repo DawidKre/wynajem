@@ -22,7 +22,6 @@ class CategoriesController extends BaseController
      */
     public function indexAction($page)
     {
-
         $CategoryRepository = $this->getDoctrine()->getRepository('WynajemBlogBundle:Category');
         $qb = $CategoryRepository->getProductCountBuilder();
 
@@ -30,7 +29,6 @@ class CategoriesController extends BaseController
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($qb, $page, $limit);
-
 
         return $this->render(
             'WynajemAdminBundle:Categories:index.html.twig',
@@ -59,7 +57,6 @@ class CategoriesController extends BaseController
         }
 
         $form = $this->createForm(new TaxonomyType(), $Category);
-
         $form->handleRequest($Request);
 
         if ($form->isValid()) {
@@ -80,7 +77,6 @@ class CategoriesController extends BaseController
                 )
             );
         }
-
         return $this->render(
             'WynajemAdminBundle:Categories:form.html.twig',
             array(
@@ -96,23 +92,17 @@ class CategoriesController extends BaseController
      *      "/delete/{id}",
      *      name="admin_categoryDelete"
      * )
-     *
+     * @param Request $Request
+     * @param Category $Category
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction(Request $Request, Category $Category)
     {
-
         $form = $this->createForm(new CategoryDeleteType($Category));
-
         $form->handleRequest($Request);
 
-//        if ($form->getData() !== $Category->getId()) {
-//            throw new Exception('Taka kategoria juz jest');
-//        }
-
         if ($form->isValid()) {
-
             $chosen = false;
-
             if (true === $form->get('setNull')->getData()) {
                 $newCategoryId = null;
                 $chosen = true;
@@ -122,7 +112,6 @@ class CategoriesController extends BaseController
                     $chosen = true;
                 }
             }
-
             if ($chosen) {
                 $PostRepo = $this->getDoctrine()->getRepository('WynajemBlogBundle:Post');
                 $modifiedPosts = $PostRepo->moveToCategory($Category->getId(), $newCategoryId);

@@ -79,6 +79,11 @@ class UserManager
         return implode($pass); //turn the array into a string
     }
 
+    /**
+     * @param $userEmail
+     * @return bool
+     * @throws UserException
+     */
     public function sendResetPasswordLink($userEmail)
     {
 
@@ -90,10 +95,7 @@ class UserManager
         }
 
         $User->setActionToken($this->generateActionToken());
-
-        $em = $this->doctrine->getManager();
-        $em->persist($User);
-        $em->flush();
+        $this->getManagerPersistFlushUser($User);
 
         $urlParams = array(
             'actionToken' => $User->getActionToken(),
@@ -131,9 +133,7 @@ class UserManager
         $User->setPassword($encodedPasswd);
         $User->setActionToken(null);
 
-        $em = $this->doctrine->getManager();
-        $em->persist($User);
-        $em->flush();
+        $this->getManagerPersistFlushUser($User);
 
         $emailBody = $this->templating->render(
             'CommonUserBundle:Email:newPassword.html.twig',
@@ -149,21 +149,14 @@ class UserManager
 
     public function registerUser(User $User)
     {
-
         if (null !== $User->getId()) {
             throw new UserException('Użytkownik jest już zarejestrowany');
         }
 
-        $encoder = $this->encoderFactory->getEncoder($User);
-        $encodedPasswd = $encoder->encodePassword($User->getPlainPassword(), $User->getSalt());
-
-        $User->setPassword($encodedPasswd);
+        $this->setEncoderPassword($User);
         $User->setActionToken($this->generateActionToken());
         $User->setIsEnabled(false);
-
-        $em = $this->doctrine->getManager();
-        $em->persist($User);
-        $em->flush();
+        $this->getManagerPersistFlushUser($User);
 
         $urlParams = array(
             'actionToken' => $User->getActionToken(),
@@ -198,9 +191,7 @@ class UserManager
         $User->setIsEnabled(true);
         $User->setActionToken(null);
 
-        $em = $this->doctrine->getManager();
-        $em->persist($User);
-        $em->flush();
+        $this->getManagerPersistFlushUser($User);
 
         return true;
     }
@@ -212,14 +203,29 @@ class UserManager
             throw new UserException('Nie ustawiono nowego hasła!');
         }
 
+        $this->setEncoderPassword($User);
+        $this->getManagerPersistFlushUser($User);
+
+        return true;
+    }
+
+    /**
+     * @param User $User
+     */
+    private function setEncoderPassword(User $User)
+    {
         $encoder = $this->encoderFactory->getEncoder($User);
         $encoderPassword = $encoder->encodePassword($User->getPlainPassword(), $User->getSalt());
         $User->setPassword($encoderPassword);
+    }
 
+    /**
+     * @param $User
+     */
+    private function getManagerPersistFlushUser($User)
+    {
         $em = $this->doctrine->getManager();
         $em->persist($User);
         $em->flush();
-
-        return true;
     }
 }

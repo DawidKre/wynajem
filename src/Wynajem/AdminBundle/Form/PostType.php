@@ -2,7 +2,13 @@
 
 namespace Wynajem\AdminBundle\Form;
 
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -12,38 +18,32 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'text', array(
+            ->add('title', TextType::class, array(
                 'label' => 'Tytuł',
                 'attr' => array(
                     'placeholder' => 'Tytuł'
                 )
             ))
-//            ->add('slug', 'text', array(
-//                'label' => 'Alias',
-//                'attr' => array(
-//                    'placeholder' => 'Alias'
-//                )
-//            ))
             ->add('content', 'ckeditor', array(
                 'label' => 'Treść'
             ))
 
-            ->add('thumbnailFile', 'file', array(
+            ->add('thumbnailFile', FileType::class, array(
                 'label' => 'Miniaturka'
             ))
-            ->add('publishedDate', 'datetime', array(
+            ->add('publishedDate', DateTimeType::class, array(
                 'label' => 'Data publikacji',
                 'date_widget' => 'single_text', //pokazać też bez
                 'time_widget' => 'single_text',
                 'data'   => new \DateTime()
             ))
-            ->add('category', 'entity', array(
+            ->add('category', EntityType::class, array(
                 'label' => 'Kategoria',
                 'class' => 'Wynajem\BlogBundle\Entity\Category',
                 'property' => 'name',
                 'empty_value' => 'Wybierz kategorię'
             ))
-            ->add('tags', 'entity', array(
+            ->add('tags', EntityType::class, array(
                 'label' => 'Tagi',
                 'multiple' => true,
                 'class' => 'Wynajem\BlogBundle\Entity\Tag',
@@ -52,7 +52,7 @@ class PostType extends AbstractType
                     'placeholder' => 'Dodaj tagi'
                 )
             ))
-            ->add('save', 'submit', array(
+            ->add('save', SubmitType::class, array(
                 'label' => 'Zapisz'
             ));
     }

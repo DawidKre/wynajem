@@ -18,7 +18,6 @@ class DashboardController extends Controller
     public function indexAction()
     {
         return $this->render('WynajemAdminBundle:Dashboard:index.html.twig', array(
-
         ));
     }
 }

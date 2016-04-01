@@ -5,7 +5,6 @@ namespace Common\UserBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-
 use Common\UserBundle\Entity\User;
 use Common\UserBundle\Form\ManageUserType;
 
@@ -19,16 +18,15 @@ class AdminController extends BaseController
      *      requirements={"page"="\d+"},
      *      defaults={"page"=1}
      * )
-     *
+     * @param Request $Request
+     * @param $page
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $Request, $page)
     {
 
         $UserRepository = $this->getDoctrine()->getRepository('CommonUserBundle:User');
-
         $qb = $UserRepository->getQueryBuilder();
-
-        //$Request = $this->getRequest();
         $limit = $Request->query->getInt('limit', $this->container->getParameter('admin.pagination_limit'));
 
         $paginator = $this->get('knp_paginator');
@@ -50,13 +48,14 @@ class AdminController extends BaseController
      *      name="user_adminUserForm",
      *      requirements={"id"="\d+"}
      * )
-     *
+     * @param Request $Request
+     * @param User $User
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function formAction(Request $Request, User $User)
     {
 
         $form = $this->createForm(new ManageUserType(), $User);
-
         $form->handleRequest($Request);
 
         if ($form->isValid()) {
@@ -76,7 +75,6 @@ class AdminController extends BaseController
                 )
             );
         }
-
 
         return $this->render(
             'CommonUserBundle:Admin:form.html.twig',

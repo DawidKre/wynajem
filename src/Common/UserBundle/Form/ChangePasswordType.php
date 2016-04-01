@@ -4,6 +4,8 @@ namespace Common\UserBundle\Form;
 
 use Common\UserBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,7 +16,7 @@ class ChangePasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('currentPassword', 'password', array(
+            ->add('currentPassword', PasswordType::class, array(
                 'label' =>  'Aktualne hasło',
                 'mapped'  =>  false,
                 'constraints'   =>  array(
@@ -23,8 +25,8 @@ class ChangePasswordType extends AbstractType
                     ))
                 )
             ))
-            ->add('plainPassword', 'repeated', array(
-                'type' =>  'password',
+            ->add('plainPassword', RepeatedType::class, array(
+                'type' =>  PasswordType::class,
                 'first_options'  =>  array(
                     'label' =>  'Nowe hasło'
                 ),

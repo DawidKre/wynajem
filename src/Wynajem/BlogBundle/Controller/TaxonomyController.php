@@ -29,19 +29,6 @@ class TaxonomyController extends Controller
         if (null === $Category) {
             throw $this->createNotFoundException('Kategoria nie została znaleziona');
         }
-
-        //List Posts
-
-//        $pagination = $this->getPaginationPost(
-//            array(
-//                'status' => 'published',
-//                'orderBy' => 'p.publishedDate',
-//                'orderDir' => 'DESC',
-//                'categorySlug' => $slug,
-//            ),
-//            $page
-//        );
-
         $pagination = $this->getPaginationProduct(
             array(
                 'status' => 1,
@@ -51,7 +38,6 @@ class TaxonomyController extends Controller
             ),
             $page
         );
-
 
         return $this->render(
             'WynajemBlogBundle:Products:offert.html.twig',
@@ -78,7 +64,6 @@ class TaxonomyController extends Controller
         if (null === $Tag) {
             throw $this->createNotFoundException('Tag nie został znaleziony');
         }
-
         $pagination = $this->getPaginationProduct(
             array(
                 'status' => 1,
@@ -102,10 +87,8 @@ class TaxonomyController extends Controller
     {
         $PostRepo = $this->getDoctrine()->getRepository(Post::class);
         $qb = $PostRepo->getQueryBuilder($params);
-
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($qb, $page, $this->itemsLimit);
-        $totalPages = $PostRepo->getStatistics();
 
         return $pagination;
     }
@@ -113,7 +96,6 @@ class TaxonomyController extends Controller
     {
         $ProdRepo = $this->getDoctrine()->getRepository(Product::class);
         $qb = $ProdRepo->getQueryBuilder($params);
-
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($qb, $page, $this->itemsLimit);
         $totalPages = $ProdRepo->getStatistics();

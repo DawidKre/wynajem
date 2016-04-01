@@ -29,7 +29,7 @@ class Product
 {
 
     const DEFAULT_AVATAR = 'default-thumbnail.jpg';
-    const UPLOAD_DIR = 'uploads/products/';
+    const UPLOAD_DIR = 'uploads/product/';
     /**
      * @var int
      *

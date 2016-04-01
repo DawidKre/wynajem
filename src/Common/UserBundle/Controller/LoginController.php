@@ -22,10 +22,8 @@ class LoginController extends BaseController
      */
     public function loginAction(Request $request)
     {
-
         //Login form
         $Session = $this->get('session');
-//        $session = $request->getSession();
 
         if ($request->attributes->has(Security::AUTHENTICATION_ERROR)) {
             $loginError = $request->get(Security::AUTHENTICATION_ERROR);
@@ -44,16 +42,12 @@ class LoginController extends BaseController
             )
         );
 
-
         //Remember Password Form
         $rememberPasswdForm = $this->createForm(new RememberPasswordType());
 
-
         if ($request->isMethod('POST')) {
             $rememberPasswdForm->handleRequest($request);
-
             if ($rememberPasswdForm->isValid()) {
-
                 try {
                     $userEmail = $rememberPasswdForm->get('email')->getData();
                     $userManager = $this->get('user_manager');
@@ -63,7 +57,6 @@ class LoginController extends BaseController
                         'success',
                         'Instrukcje resetowania hasla zostały wyslane na email'
                     );
-
                     return $this->redirect($this->generateUrl('blog_login'));
                 } catch (UserException $exc) {
                     $error = new FormError($exc->getMessage());
@@ -78,11 +71,8 @@ class LoginController extends BaseController
 
         if ($request->isMethod('POST')) {
             $registerUserForm->handleRequest($request);
-
             if ($registerUserForm->isValid()) {
-
                 try {
-
                     $userManager = $this->get('user_manager');
                     $userManager->registerUser($User);
 
@@ -90,7 +80,6 @@ class LoginController extends BaseController
                         'success',
                         'Konto zostało utworzone. Na Twoją skrzynkę pocztową została wysłana wiadomość aktywacyjna.'
                     );
-
                     return $this->redirect($this->generateUrl('blog_login'));
 
                 } catch (UserException $ex) {
@@ -99,19 +88,6 @@ class LoginController extends BaseController
 
             }
         }
-
-
-//        if(1==1) {
-//            return $this->render(
-//                'CommonUserBundle:Login:login.html.twig',
-//                array(
-//                    'loginForm' => $loginForm->createView(),
-//                    'rememberPasswdForm' => $rememberPasswdForm->createView(),
-//                    'registerUserForm' => $registerUserForm->createView()
-//                )
-//            );
-//        }
-
         return $this->render(
             'CommonUserBundle:Login:login.html.twig',
             array(
@@ -143,14 +119,11 @@ class LoginController extends BaseController
         try {
             $userManager = $this->get('user_manager');
             $userManager->activateAccount($actionToken);
-
             $this->getSessionFlashBag()->add('success', 'Twoje konto zostało aktywowane');
 
         } catch (UserException $ex) {
             $this->getSessionFlashBag()->add('error', $ex->getMessage());
         }
-
-
         return $this->redirect($this->generateUrl('blog_login'));
     }
 
@@ -162,7 +135,6 @@ class LoginController extends BaseController
         try {
             $userManager = $this->get('user_manager');
             $userManager->resetPassword($actionToken);
-
             $this->getSessionFlashBag()->add('success', $message);
         } catch (UserException $ex) {
             $this->getSessionFlashBag()->add('error', $ex->getMessage());

@@ -36,7 +36,6 @@ class ProductsController extends Controller
 
         $ProductRepository = $this->getDoctrine()->getRepository(Product::class);
         $statistic = $ProductRepository->getStatistics();
-
         $qb = $ProductRepository->getQueryBuilder($queryParams);
 
         $paginationLimit = $this->container->getParameter('admin.pagination_limit');
@@ -98,10 +97,9 @@ class ProductsController extends Controller
         }
 
         $form = $this->createForm(new ProductType(), $Product);
-
         $form->handleRequest($request);
-        if ($form->isValid()) {
 
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($Product);
             $em->flush();
@@ -138,7 +136,6 @@ class ProductsController extends Controller
      */
     public function deleteAction($id, $token)
     {
-
         $tokenName = sprintf($this->delete_token_name, $id);
         $csrfProvider = $this->get('form.csrf_provider');
 
@@ -146,7 +143,6 @@ class ProductsController extends Controller
             $this->get('session')->getFlashBag()->add('error', 'Niepoprawny token akcji!');
 
         } else {
-
             $Post = $this->getDoctrine()->getRepository('WynajemBlogBundle:Product')->find($id);
             $em = $this->getDoctrine()->getManager();
             $em->remove($Post);

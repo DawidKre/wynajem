@@ -23,16 +23,16 @@ class TagsController extends Controller
      *      requirements={"page"="\d+"},
      *      defaults={"page"=1}
      * )
-     *
+     * @param Request $Request
+     * @param $page
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $Request, $page) {
 
         $TagRepository = $this->getDoctrine()->getRepository('WynajemBlogBundle:Tag');
-
         $qb = $TagRepository->getProductCountBuilder();
 
         $limit = $this->container->getParameter('admin.pagination_limit');
-
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($qb, $page, $limit);
 
@@ -60,7 +60,6 @@ class TagsController extends Controller
         }
 
         $form = $this->createForm(new TaxonomyType(), $Tag);
-
         $form->handleRequest($Request);
 
         if($form->isValid()){
@@ -70,7 +69,6 @@ class TagsController extends Controller
             $em->flush();
 
             $flashMessage = (isset($newTag)) ? 'Poprawnie dodano nowy tag' : 'Poprawiono tag';
-
             $this->get('session')->getFlashBag()->add('success', $flashMessage);
 
             return $this->redirect($this->generateUrl('admin_tagForm', array(
@@ -101,9 +99,7 @@ class TagsController extends Controller
 
         if(!$csrfProvider->isCsrfTokenValid($tokenName, $token)){
             $this->get('session')->getFlashBag()->add('error', 'Niepoprawny token akcji!');
-
         }else{
-
             $Tag = $this->getDoctrine()->getRepository('WynajemBlogBundle:Tag')->find($id);
             $em = $this->getDoctrine()->getManager();
             $em->remove($Tag);
